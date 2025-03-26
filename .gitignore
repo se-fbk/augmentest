@@ -1,0 +1,10 @@
+.Rhistory
+evooracle_venv/
+evooracle_venv_02/
+evooracle_venv_03/
+augmentestvenv/
+augmentest_venv/
+.vscode/
+__pycache__/
+openLLM/
+output_resources/
