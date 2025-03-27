@@ -1,6 +1,6 @@
 # AugmenTest: Enhancing Tests with LLM-driven Oracles
 
-![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)
+![GitHub license](https://img.shields.io/badge/license-Apache%202.0-blue.svg)
 ![Python Version](https://img.shields.io/badge/python-3.9%2B-blue)
 [![Replication Package](https://img.shields.io/badge/Replication_Package-Zenodo-1687d2)](https://zenodo.org/records/13881826)
 
@@ -144,7 +144,7 @@ All experimental data, benchmarks, and additional resources are available in our
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the Apache License 2.0 - see the [LICENSE](LICENSE) file for details.
 
 ## Contact
 
