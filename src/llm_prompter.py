@@ -49,8 +49,8 @@ def prompt_openLLM(messages):
             print("Prompt: " + Fore.GREEN + messages, Style.RESET_ALL)
             with model.chat_session():
                 # print(model.generate("quadratic formula"))
-                # response = model.generate(messages)
-                response = "assertNotNull(eventTypeOuter_EventTypeEnum0);"
+                response = model.generate(messages)
+                # response = "assertNotNull(eventTypeOuter_EventTypeEnum0);"
             print("Response: " + Fore.GREEN + response, Style.RESET_ALL)
             
             return response
