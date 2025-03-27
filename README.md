@@ -1,37 +1,39 @@
-# AugmenTest: AI-Powered Test Oracle Generation
+# AugmenTest: Enhancing Tests with LLM-driven Oracles
 
-![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)
-![Python Version](https://img.shields.io/badge/python-3.8%2B-blue)
+![GitHub license](https://img.shields.io/badge/license-Apache%202.0-blue.svg)
+![Python Version](https://img.shields.io/badge/python-3.9%2B-blue)
+[![Replication Package](https://img.shields.io/badge/Replication_Package-Zenodo-1687d2)](https://zenodo.org/records/13881826)
 
-AugmenTest is an advanced automated test oracle generation system that leverages Large Language Models (LLMs) to enhance software testing efficiency. The tool generates JUnit test assertions and complete test cases, serving as an intelligent oracle for Java applications.
+AugmenTest is an advanced automated test oracle generation system that leverages Large Language Models (LLMs) to enhance software testing efficiency. The tool generates JUnit test assertions for test cases (automatically generated or developer written) utilizing code documentations and developer code comments, serving as an intelligent oracle for Java applications.
+
+**Research Paper**: This tool accompanies our paper _"AugmenTest: Enhancing Tests with LLM-driven Oracles"_. The complete replication package is available on [Zenodo](https://zenodo.org/records/13881826).
 
 ## Key Features
 
 - 🧠 **LLM Integration**: Supports multiple LLM backends including GPT-4All and OpenAI
 - 🧪 **Automated Assertion Generation**: Creates precise test assertions using code context
 - 🔄 **Multi-Variant Prompting**: Implements different prompting strategies (Simple, Extended, RAG)
-- 📊 **Test Augmentation**: Enhames existing EvoSuite-generated tests with intelligent oracles
-- 🔍 **Context-Aware**: Utilizes code structure, developer comments, and dependencies
+- 📊 **Test Augmentation**: Enhames existing automatically generated or developer written tests with intelligent oracles
+- 🔍 **Context-Aware**: Utilizes code structure, developer comments, code documentations and dependencies
 
-## Architecture Overview
+## Approach Overview
 
-![alt text](resources/evoOracle_overview.png)
-*Figure 01: Tool Overview*
+![alt text](resources/approach_overview.png)
 
 ## Getting Started
 
 ### Prerequisites
 
-- Python 3.8+
-- Java 8+ (for EvoSuite integration)
+- Python 3.9+
+- Java 8+
 - GPT4All or OpenAI API access
 
 ### Installation
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/khandakerrahin/evooracle.git
-   cd evooracle
+   git clone git@github.com:se-fbk/augmentest.git
+   cd augmentest
    ```
 
 2. Set up virtual environment:
@@ -45,31 +47,87 @@ AugmenTest is an advanced automated test oracle generation system that leverages
    ```bash
    pip install -r requirements.txt
    ```
-
-4. Configure environment:
+4. Change working directory:
    ```bash
-   cp config.ini.example config.ini
-   # Edit config.ini with your paths and API keys
+   cd src/
+   ```
+5. Prepare LLM Models (Choose one option):
+
+   **Option A: Local GPT4All Models**
+   ```bash
+   # Download quantized models from:
+   # https://docs.gpt4all.io/gpt4all_desktop/quickstart.html
+   # Recommended models:
+   # - Nous-Hermes-2-Mistral-7B-DPO.Q4_0.gguf
+   # - mistral-7b-openorca.Q4_0.gguf
+
+   mkdir -p models/
+   # Move downloaded .gguf files to models/ directory
    ```
 
-### Usage
+   **Option B: OpenAI API**
+   ```bash
+   # No additional downloads needed
+   # Just configure your API key in config.ini
+   ```
+
+   **Option C: Other APIs/Models (Gemini/DeepSeek/etc)**
+   ```bash
+   # Install additional requirements as needed:
+   # implement the APIs in class: llm_prompter.py
+   ```
+5. Configure environment:
+   ```bash
+   cp config.ini.example config.ini
+   nano config.ini  # or use your preferred editor
+   ```
+   Edit the following sections:
+   ```ini
+   [DEFAULT]
+   ; For Local Models
+   llm_base_path = ./models/ 
+   DEFAULT_MODEL = Nous-Hermes-2-Mistral-7B-DPO.Q4_0.gguf
+
+   ; For OpenAI
+   [openai]
+   api_key = your-api-key-here
+   DEFAULT_MODEL = gpt-4-turbo
+
+   ; For other APIs
+   # deepseek_api_key = your-key
+   # gemini_api_key = your-key
+   ```
+
+## Usage Options
+
+### Option 1: Manual Two-Step Process
 
 1. **Preprocess Test Cases**:
    ```bash
    python run_preprocess_test_cases.py <project_dir> <language>
-   # Example: python run_preprocess_test_cases.py /path/to/project java
+   # Example: 
+   python run_preprocess_test_cases.py /path/to/project java
+   # Note: Currently supports only Java projects (Python support coming soon)
    ```
 
-2. **Generate Test Oracles**:
+2. **Generate Oracles Individually**:
    ```bash
    python run_oracle_generation.py <test_id> <project_dir> <class_name> <method_name> <model> <variant> <use_comments>
-   # Example: python run_oracle_generation.py T001 /path/to/project MyClass test1 Nous-Hermes-2-Mistral-7B-DPO.Q4_0.gguf SIMPLE_PROMPT true
+   # Example:
+   python run_oracle_generation.py T001 /path/to/project MyClass test1 \
+   Nous-Hermes-2-Mistral-7B-DPO.Q4_0.gguf SIMPLE_PROMPT true
    ```
 
-3. **Batch Processing** (for all test cases):
-   ```bash
-   python automate_pipeline.py /path/to/project java
-   ```
+### Option 2: Automated Batch Processing (Recommended)
+
+```bash
+python run_augmentest.py <project_dir> <language>
+# Example:
+python run_augmentest.py /path/to/project java
+# This automatically performs:
+# 1. Test case preprocessing
+# 2. Oracle generation for all test cases
+```
 
 ## Configuration
 
@@ -86,28 +144,19 @@ openai_api_key = your-key-here
 ## Supported LLM Models
 
 - Local Models:
-  - Nous-Hermes-2-Mistral
-  - Mistral-7B
-  - GPT4All-J
+  - GPT4All
 - Cloud Models:
-  - OpenAI GPT-3.5/4
-  - Anthropic Claude
+  - OpenAI GPT-4o
 
-## Documentation
+## Research and Citation
 
-For detailed documentation, please see:
-- [Architecture Design](docs/ARCHITECTURE.md)
-- [Prompt Engineering Strategies](docs/PROMPTING.md)
-- [Benchmark Results](docs/RESULTS.md)
+This work accompanies our research paper:  
+**"AugmenTest: Enhancing Tests with LLM-driven Oracles"**
 
-## Contributing
+📦 **Replication Package**:  
+All experimental data, benchmarks, and additional resources are available in our [Zenodo replication package](https://zenodo.org/records/13881826).
 
-We welcome contributions! Please see our [Contribution Guidelines](CONTRIBUTING.md).
-
-## Citation
-
-If you use AugmenTest in your research, please cite:
-
+📄 **Citation**:
 ```bibtex
 @misc{khandaker2025augmentestenhancingtestsllmdriven,
       title={AugmenTest: Enhancing Tests with LLM-Driven Oracles}, 
@@ -118,14 +167,53 @@ If you use AugmenTest in your research, please cite:
       primaryClass={cs.SE},
       url={https://arxiv.org/abs/2501.17461}, 
 }
+
+```
+```bibtex
+@dataset{khandaker_2024_13881826,
+  author       = {Khandaker, Shaker Mahmud and
+                  Kifetew, Fitsum and
+                  Prandi, Davide and
+                  Susi, Angelo},
+  title        = {AugmenTest: Enhancing Tests with LLM-driven
+                   Oracles - Replication package
+                  },
+  month        = oct,
+  year         = 2024,
+  publisher    = {Zenodo},
+  doi          = {10.5281/zenodo.13881826},
+  url          = {https://doi.org/10.5281/zenodo.13881826},
+}
 ```
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the Apache License 2.0 - see the [LICENSE](LICENSE) file for details.
 
 ## Contact
 
-Shaker Mahmud Khandaker  
-📧 khandakerrahin@gmail.com  
-🌐 [Personal Website](https://yourwebsite.com)
+### Core Team
+
+**Shaker Mahmud Khandaker** (Maintainer)  
+📧 skhandakerATfbkDOTeu
+🌐 [www.khandakerrahin.com](https://www.khandakerrahin.com/)  
+🔗 [LinkedIn](https://www.linkedin.com/in/khandakerrahin/)  
+🐦 [@khandakerrahin](https://twitter.com/khandakerrahin)  
+
+**Fitsum Meshesha Kifetew**  
+📧 kifetewATfbkDOTeu
+🌐 [kifetew.github.io](https://kifetew.github.io/)  
+🔗 [LinkedIn](https://www.linkedin.com/in/fitsum-meshesha-kifetew-b1bb2015/)  
+
+**Davide Prandi**  
+📧 prandiATfbkDOTeu
+🌐 [se.fbk.eu/team/prandi](https://se.fbk.eu/team/prandi)  
+🔗 [LinkedIN](https://www.linkedin.com/in/davide-prandi-26319421/)  
+
+**Angelo Susi**  
+📧 susiATfbkDOTeu
+🌐 [se.fbk.eu/team/susi](https://se.fbk.eu/team/susi)  
+🔗 [LinkedIN](https://www.linkedin.com/in/angelo-susi/)  
+
+### Academic Collaborations
+For research-related inquiries, please contact the maintainer with "[AugmenTest Research]" in the subject line.
