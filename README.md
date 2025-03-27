@@ -192,23 +192,23 @@ This project is licensed under the Apache License 2.0 - see the [LICENSE](LICENS
 ### Core Team
 
 **Shaker Mahmud Khandaker** (Maintainer)  
-📧 shakerkhandaker1193@gmail.com  
+📧 skhandakerATfbkDOTeu
 🌐 [www.khandakerrahin.com](https://www.khandakerrahin.com/)  
 🔗 [LinkedIn](https://www.linkedin.com/in/khandakerrahin/)  
 🐦 [@khandakerrahin](https://twitter.com/khandakerrahin)  
 
 **Fitsum Meshesha Kifetew**  
-📧 kifetew@fbk.eu  
+📧 kifetewATfbkDOTeu
 🌐 [kifetew.github.io](https://kifetew.github.io/)  
 🔗 [LinkedIn](https://www.linkedin.com/in/fitsum-meshesha-kifetew-b1bb2015/)  
 
 **Davide Prandi**  
-📧 prandi@fbk.eu  
+📧 prandiATfbkDOTeu
 🌐 [se.fbk.eu/team/prandi](https://se.fbk.eu/team/prandi)  
 🔗 [LinkedIN](https://www.linkedin.com/in/davide-prandi-26319421/)  
 
 **Angelo Susi**  
-📧 susi@fbk.eu  
+📧 susiATfbkDOTeu
 🌐 [se.fbk.eu/team/susi](https://se.fbk.eu/team/susi)  
 🔗 [LinkedIN](https://www.linkedin.com/in/angelo-susi/)  
 
