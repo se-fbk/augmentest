@@ -48,10 +48,51 @@ AugmenTest is an advanced automated test oracle generation system that leverages
    pip install -r requirements.txt
    ```
 
-4. Configure environment:
+4. Prepare LLM Models (Choose one option):
+
+   **Option A: Local GPT4All Models**
+   ```bash
+   # Download quantized models from:
+   # https://docs.gpt4all.io/gpt4all_desktop/models.html#download-models
+   # Recommended models:
+   # - Nous-Hermes-2-Mistral-7B-DPO.Q4_0.gguf
+   # - mistral-7b-openorca.Q4_0.gguf
+
+   mkdir -p models/
+   # Move downloaded .gguf files to models/ directory
+   ```
+
+   **Option B: OpenAI API**
+   ```bash
+   # No additional downloads needed
+   # Just configure your API key in config.ini
+   ```
+
+   **Option C: Other APIs/Models (Gemini/DeepSeek/etc)**
+   ```bash
+   # Install additional requirements as needed:
+   # implement the APIs in class: llm_prompter.py
+   ```
+5. Configure environment:
    ```bash
    cp config.ini.example config.ini
-   # Edit config.ini with your paths and API keys
+   nano config.ini  # or use your preferred editor
+   ```
+   Edit the following sections:
+   ```ini
+   [DEFAULT]
+   ; For Local Models
+   llm_base_path = ./models/  # Path to your .gguf files
+   DEFAULT_MODEL = Nous-Hermes-2-Mistral-7B-DPO.Q4_0.gguf
+
+   ; For OpenAI
+   [openai]
+   api_key = your-api-key-here
+   DEFAULT_MODEL = gpt-4-turbo
+
+   ; For other APIs
+   # deepseek_api_key = your-key
+   # gemini_api_key = your-key
    ```
 
 ## Usage Options
