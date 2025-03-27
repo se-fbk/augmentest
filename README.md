@@ -47,13 +47,16 @@ AugmenTest is an advanced automated test oracle generation system that leverages
    ```bash
    pip install -r requirements.txt
    ```
-
-4. Prepare LLM Models (Choose one option):
+4. Change working directory:
+   ```bash
+   cd src/
+   ```
+5. Prepare LLM Models (Choose one option):
 
    **Option A: Local GPT4All Models**
    ```bash
    # Download quantized models from:
-   # https://docs.gpt4all.io/gpt4all_desktop/models.html#download-models
+   # https://docs.gpt4all.io/gpt4all_desktop/quickstart.html
    # Recommended models:
    # - Nous-Hermes-2-Mistral-7B-DPO.Q4_0.gguf
    # - mistral-7b-openorca.Q4_0.gguf
@@ -82,7 +85,7 @@ AugmenTest is an advanced automated test oracle generation system that leverages
    ```ini
    [DEFAULT]
    ; For Local Models
-   llm_base_path = ./models/  # Path to your .gguf files
+   llm_base_path = ./models/ 
    DEFAULT_MODEL = Nous-Hermes-2-Mistral-7B-DPO.Q4_0.gguf
 
    ; For OpenAI
