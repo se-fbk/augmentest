@@ -157,7 +157,7 @@ Core oracle generation functionality is fully available.
 
 A complete reproduction guide will be added shortly.
 
-The full dataset and results are available on Zenodo.
+The full dataset and results are available on [Zenodo](https://zenodo.org/records/13881826).
 
 ---
 
