@@ -30,7 +30,7 @@ class GeminiModelClient(LLMClient):
         self.initial_delay = initial_delay
         self.system_prompt_key = system_prompt_key
 
-        self.api_key = "***REMOVED***"
+        self.api_key = os.environ.get("GEMINI_API_KEY")
         if not self.api_key:
             raise ValueError("GEMINI_API_KEY not set in environment variables.")
 
