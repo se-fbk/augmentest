@@ -1,10 +1,9 @@
 # AugmenTest: Enhancing Tests with LLM-driven Oracles
 
 ![GitHub license](https://img.shields.io/badge/license-Apache%202.0-blue.svg)
-![Python Version](https://img.shields.io/badge/python-3.9%2B-blue)
 [![Replication Package](https://img.shields.io/badge/Replication_Package-Zenodo-1687d2)](https://zenodo.org/records/13881826)
 
-AugmenTest is an advanced automated test oracle generation system that leverages Large Language Models (LLMs) to enhance software testing efficiency. The tool generates JUnit test assertions for test cases (automatically generated or developer written) utilizing code documentations and developer code comments, serving as an intelligent oracle for Java applications.
+AugmenTest is aresearch tool that automates test oracle generation by leveraging Large Language Models (LLMs) to enhance software testing efficiency. The tool generates JUnit test assertions for test cases (automatically generated or developer written) utilizing code documentations and developer code comments, serving as an intelligent oracle for Java applications.
 
 **Research Paper**: This tool accompanies our paper _"AugmenTest: Enhancing Tests with LLM-driven Oracles"_. The complete replication package is available on [Zenodo](https://zenodo.org/records/13881826).
 
@@ -16,137 +15,163 @@ AugmenTest is an advanced automated test oracle generation system that leverages
 - 📊 **Test Augmentation**: Enhames existing automatically generated or developer written tests with intelligent oracles
 - 🔍 **Context-Aware**: Utilizes code structure, developer comments, code documentations and dependencies
 
+---
+
 ## Approach Overview
 
 ![alt text](resources/approach_overview.png)
 
-## Getting Started
+## Workflow Pipeline Overview
 
-### Prerequisites
+![alt text](resources/augmentest_pipeline.png)
 
-- Python 3.9+
-- Java 8+
-- GPT4All or OpenAI API access
+# Requirements
 
-### Installation
+Docker is required.
 
-1. Clone the repository:
-   ```bash
-   git clone git@github.com:se-fbk/augmentest.git
-   cd augmentest
-   ```
+The container includes:
 
-2. Set up virtual environment:
-   ```bash
-   python -m venv augmentest_venv
-   source augmentest_venv/bin/activate  # Linux/Mac
-   .\augmentest_venv\Scripts\activate  # Windows
-   ```
+* Python 3.12
+* Java (Temurin)
+* Maven
+* Tree-sitter
+* All required dependencies
 
-3. Install dependencies:
-   ```bash
-   pip install -r requirements.txt
-   ```
-4. Change working directory:
-   ```bash
-   cd src/
-   ```
-5. Prepare LLM Models (Choose one option):
+---
 
-   **Option A: Local GPT4All Models**
-   ```bash
-   # Download quantized models from:
-   # https://docs.gpt4all.io/gpt4all_desktop/quickstart.html
-   # Recommended models:
-   # - Nous-Hermes-2-Mistral-7B-DPO.Q4_0.gguf
-   # - mistral-7b-openorca.Q4_0.gguf
+# Build
 
-   mkdir -p models/
-   # Move downloaded .gguf files to models/ directory
-   ```
-
-   **Option B: OpenAI API**
-   ```bash
-   # No additional downloads needed
-   # Just configure your API key in config.ini
-   ```
-
-   **Option C: Other APIs/Models (Gemini/DeepSeek/etc)**
-   ```bash
-   # Install additional requirements as needed:
-   # implement the APIs in class: llm_prompter.py
-   ```
-5. Configure environment:
-   ```bash
-   cp config.ini.example config.ini
-   nano config.ini  # or use your preferred editor
-   ```
-   Edit the following sections:
-   ```ini
-   [DEFAULT]
-   ; For Local Models
-   llm_base_path = ./models/ 
-   DEFAULT_MODEL = Nous-Hermes-2-Mistral-7B-DPO.Q4_0.gguf
-
-   ; For OpenAI
-   [openai]
-   api_key = your-api-key-here
-   DEFAULT_MODEL = gpt-4-turbo
-
-   ; For other APIs
-   # deepseek_api_key = your-key
-   # gemini_api_key = your-key
-   ```
-
-## Usage Options
-
-### Option 1: Manual Two-Step Process
-
-1. **Preprocess Test Cases**:
-   ```bash
-   python run_preprocess_test_cases.py <project_dir> <language>
-   # Example: 
-   python run_preprocess_test_cases.py /path/to/project java
-   # Note: Currently supports only Java projects (Python support coming soon)
-   ```
-
-2. **Generate Oracles Individually**:
-   ```bash
-   python run_oracle_generation.py <test_id> <project_dir> <class_name> <method_name> <model> <variant> <use_comments>
-   # Example:
-   python run_oracle_generation.py T001 /path/to/project MyClass test1 \
-   Nous-Hermes-2-Mistral-7B-DPO.Q4_0.gguf SIMPLE_PROMPT true
-   ```
-
-### Option 2: Automated Batch Processing (Recommended)
+From repository root:
 
 ```bash
-python run_augmentest.py <project_dir> <language>
-# Example:
-python run_augmentest.py /path/to/project java
-# This automatically performs:
-# 1. Test case preprocessing
-# 2. Oracle generation for all test cases
+docker build -t augmentest .
 ```
 
-## Configuration
 
-Edit `config.ini` to customize:
+---
 
-```ini
-[DEFAULT]
-output_dir = ./output/
-model_path = ./models/
-openai_api_key = your-key-here
-# ... other configurations
+# LLM Server
+
+AugmenTest requires an HTTP-accessible LLM endpoint (default: port 8000).
+
+We provide cross-platform startup scripts.
+
+### Linux / macOS
+
+```bash
+./scripts/start_llm_server.sh
 ```
 
-## Supported LLM Models
+### Windows (PowerShell)
 
-- Local Models:
-  - GPT4All
-- Cloud Models:
-  - OpenAI GPT-4o
+```powershell
+powershell -ExecutionPolicy Bypass -File .\scripts\start_llm_server.ps1
+```
+
+### Windows (CMD)
+
+```cmd
+scripts\start_llm_server.bat
+```
+
+These scripts:
+
+* Create a local `LLMs/` directory (if missing)
+* Download the default model
+  `qwen2.5-coder-7b-instruct-q2_k.gguf`
+* Pull the `llama.cpp` Docker server image
+* Start the server container
+* Expose the model at:
+
+```
+http://localhost:8000
+```
+
+You may edit the scripts to:
+
+* Change model
+* Change model directory
+* Change port
+* Change token limit
+
+Alternatively, any LLM exposed via HTTP can be used (local server, cluster, remote endpoint). Configure the endpoint in `config.ini`.
+
+---
+
+# Sample Project
+
+A minimal example project is included:
+
+```
+sample_java_project/simple_calculator
+```
+
+This project can be used to verify that AugmenTest is correctly installed and running.
+
+---
+
+# Run (Using Sample Project)
+
+From repository root:
+
+```bash
+docker run --rm \
+  --network host \
+  --user $(id -u):$(id -g) \
+  -e "_JAVA_OPTIONS=-Duser.home=/tmp" \
+  -v "$(pwd)/sample_java_project/simple_calculator":/target \
+  augmentest \
+  /target --max_refines 3 --max_generations 3
+```
+
+This will:
+
+1. Extract metadata from the sample project
+2. Generate assertions
+3. Compile and execute tests
+4. Store logs and results in project root inside "augmentest-tests" folder
+
+---
+
+# CSV Batch Mode
+
+For controlled experiments:
+
+```bash
+docker run --rm \
+  --network host \
+  --user $(id -u):$(id -g) \
+  -e "_JAVA_OPTIONS=-Duser.home=/tmp" \
+  -v "$(pwd)":/workspace \
+  augmentest \
+  /workspace/input.csv
+```
+
+---
+
+# ICST 2025 Experiment Reproduction
+
+The full orchestration pipeline used in the ICST 2025 empirical evaluation (dataset preparation, mutation generation, batch automation) is being consolidated into this repository.
+
+Core oracle generation functionality is fully available.
+
+A complete reproduction guide will be added shortly.
+
+The full dataset and results are available on Zenodo.
+
+---
+
+# Output
+
+AugmenTest exports:
+
+* Generated prompts
+* Generated assertions
+* Compilation logs
+* Execution logs
+* CSV/JSON summaries
+
+---
 
 ## Research and Citation
 
