@@ -1,0 +1,28 @@
+---
+config:
+  flowchart:
+    curve: linear
+---
+graph TD;
+	__start__([<p>__start__</p>]):::first
+	preprocessor(preprocessor)
+	scheduler(scheduler)
+	generator(generator)
+	validator(validator)
+	saver(saver)
+	failure_handler(failure_handler)
+	__end__([<p>__end__</p>]):::last
+	__start__ --> scheduler;
+	failure_handler --> saver;
+	generator --> validator;
+	preprocessor --> scheduler;
+	saver --> scheduler;
+	scheduler -. &nbsp;end&nbsp; .-> __end__;
+	scheduler -.-> generator;
+	scheduler -.-> preprocessor;
+	validator -.-> failure_handler;
+	validator -.-> generator;
+	validator -.-> saver;
+	classDef default fill:#f2f0ff,line-height:1.2
+	classDef first fill-opacity:0
+	classDef last fill:#bfb6fc
