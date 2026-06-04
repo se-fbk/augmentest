@@ -3,7 +3,7 @@
 ![GitHub license](https://img.shields.io/badge/license-Apache%202.0-blue.svg)
 [![Replication Package](https://img.shields.io/badge/Replication_Package-Zenodo-1687d2)](https://zenodo.org/records/13881826)
 
-AugmenTest is aresearch tool that automates test oracle generation by leveraging Large Language Models (LLMs) to enhance software testing efficiency. The tool generates JUnit test assertions for test cases (automatically generated or developer written) utilizing code documentations and developer code comments, serving as an intelligent oracle for Java applications.
+AugmenTest is a research tool that automates test oracle generation by leveraging Large Language Models (LLMs) to enhance software testing efficiency. The tool generates JUnit test assertions for test cases (automatically generated or developer written) utilizing code documentation and developer code comments, serving as an intelligent oracle for Java applications.
 
 **Research Paper**: This tool accompanies our paper _"AugmenTest: Enhancing Tests with LLM-driven Oracles"_. The complete replication package is available on [Zenodo](https://zenodo.org/records/13881826).
 
@@ -12,8 +12,8 @@ AugmenTest is aresearch tool that automates test oracle generation by leveraging
 - 🧠 **LLM Integration**: Supports multiple LLM backends including GPT-4All and OpenAI
 - 🧪 **Automated Assertion Generation**: Creates precise test assertions using code context
 - 🔄 **Multi-Variant Prompting**: Implements different prompting strategies (Simple, Extended, RAG)
-- 📊 **Test Augmentation**: Enhames existing automatically generated or developer written tests with intelligent oracles
-- 🔍 **Context-Aware**: Utilizes code structure, developer comments, code documentations and dependencies
+- 📊 **Test Augmentation**: Enhances existing automatically generated or developer written tests with intelligent oracles
+- 🔍 **Context-Aware**: Utilizes code structure, developer comments, code documentation and dependencies
 
 ---
 
@@ -47,6 +47,10 @@ From repository root:
 docker build -t augmentest .
 ```
 
+> **Apple Silicon (M1/M2/M3):** Specify the platform explicitly at build time:
+> ```bash
+> docker build --platform linux/amd64 -t augmentest .
+> ```
 
 ---
 
@@ -220,25 +224,25 @@ This project is licensed under the Apache License 2.0 - see the [LICENSE](LICENS
 ### Core Team
 
 **Shaker Mahmud Khandaker** (Maintainer)  
-📧 skhandakerATfbkDOTeu
+📧 skhandakerATfbkDOTeu  
 🌐 [www.khandakerrahin.com](https://www.khandakerrahin.com/)  
 🔗 [LinkedIn](https://www.linkedin.com/in/khandakerrahin/)  
 🐦 [@khandakerrahin](https://twitter.com/khandakerrahin)  
 
 **Fitsum Meshesha Kifetew**  
-📧 kifetewATfbkDOTeu
+📧 kifetewATfbkDOTeu  
 🌐 [kifetew.github.io](https://kifetew.github.io/)  
 🔗 [LinkedIn](https://www.linkedin.com/in/fitsum-meshesha-kifetew-b1bb2015/)  
 
 **Davide Prandi**  
-📧 prandiATfbkDOTeu
+📧 prandiATfbkDOTeu  
 🌐 [se.fbk.eu/team/prandi](https://se.fbk.eu/team/prandi)  
-🔗 [LinkedIN](https://www.linkedin.com/in/davide-prandi-26319421/)  
+🔗 [LinkedIn](https://www.linkedin.com/in/davide-prandi-26319421/)  
 
 **Angelo Susi**  
-📧 susiATfbkDOTeu
+📧 susiATfbkDOTeu  
 🌐 [se.fbk.eu/team/susi](https://se.fbk.eu/team/susi)  
-🔗 [LinkedIN](https://www.linkedin.com/in/angelo-susi/)  
+🔗 [LinkedIn](https://www.linkedin.com/in/angelo-susi/)  
 
 ### Academic Collaborations
 For research-related inquiries, please contact the maintainer with "[AugmenTest Research]" in the subject line.
